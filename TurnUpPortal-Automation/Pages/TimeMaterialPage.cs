@@ -1,7 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace TurnUpPortal_Automation.Pages
         {
             // Create a new Time/Material record
 
-           
+
 
             // Click on the Create New Button 
             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
@@ -60,112 +62,122 @@ namespace TurnUpPortal_Automation.Pages
             goToLastPageButton.Click();
 
             VerifyRecordCreated(driver);
+        }
 
-// public
-         void VerifyRecordCreated(IWebDriver driver)
-        {
-          IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-           if (newCode.Text == "March2024")
-           {
-             Console.WriteLine("New Time record has been created successfully");
-           }
-           else
-           {
-             Console.WriteLine("New Time record has not been created");
-           }
+            // public
+            public void VerifyRecordCreated(IWebDriver driver)
+            {
+                IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+                /*  if (newCode.Text == "March2024")
+                  {
+                    Console.WriteLine("New Time record has been created successfully");
+                  }
+                  else
+                  {
+                    Console.WriteLine("New Time record has not been created");
+                  }*/
 
-              Thread.Sleep(5000);
+                Assert.That(newCode.Text == "March2024", "New Time record has not been created");
+                Thread.Sleep(5000);
 
+            }
+
+
+            public void EditNewlyCreatedTMRecord(IWebDriver driver)
+            {
+                // TO EDIT THE ENTRY IN THE NEW RECORD
+
+                // In the row of the  new record, select edit button
+                IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
+                editButton.Click();
+
+
+                // clear the old value
+                driver.FindElement(By.Id("Description")).Clear();
+
+                // Select the item user wants to edit in the record...here user want to edit  description entry & edit the value
+                IWebElement newDescription = driver.FindElement(By.Id("Description"));
+                newDescription.SendKeys("Mar-Apr2024");
+
+
+                //navigate to save button and click it
+
+                IWebElement saveEdit = driver.FindElement(By.Id("SaveButton"));
+                saveEdit.Click();
+
+                Thread.Sleep(5000);
+
+                //navigate to the last page and check whether the latest entry's price value has been editted or not
+                IWebElement goToEditValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+                goToEditValue.Click();
+
+                IWebElement edittedValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+                string valueText = edittedValue.Text;
+                string wantedText = "Wanted Item Text";
+
+
+                /* if (valueText == wantedText)
+                 {
+                     Console.WriteLine("Record has been editted succeddfully");
+                 }
+                 else
+                 {
+                     Console.WriteLine("Record has not been editted successfully");
+                 }*/
+
+
+                Assert.That(valueText == wantedText, "Record has not been editted successfully");
+
+            }
+            public void DeleteNewlyCreatedEmployeeRecord(IWebDriver driver)
+            {
+                // TO DELETE THE NEW RECORD FROM THE TABLE
+
+                // In the new row navigate to the delete button and click on it
+                IWebElement deleteItem = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
+                deleteItem.Click();
+
+                //Select "Ok" in the hover pop up
+                IAlert alert = driver.SwitchTo().Alert();
+                alert.Accept();
+
+                Thread.Sleep(5000);
+
+                // Check whether the deleted entry no more exists in the table
+
+                IWebElement deletedValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+                string itemText = deletedValue.Text;
+                string expectedText = "Expected Item Text";
+
+                /*if (itemText == expectedText)
+                {
+                    Console.WriteLine("Item has not been deleted, it is still there");
+                }
+                else
+                {
+                    Console.WriteLine("Record has been deleted successfully");
+                }*/
+
+                Assert.That(itemText == expectedText, "Record has been deleted successfully");
+
+
+            }
+
+            internal void EditNewlyCreatedEmployeeRecord(IWebDriver driver)
+            {
+                throw new NotImplementedException();
+            }
+
+            internal void CreateEmployeeRecord(IWebDriver driver)
+            {
+                throw new NotImplementedException();
+            }
         }
 
 
 
 
 
-        }
-        public void EditNewlyCreatedTMRecord(IWebDriver driver)
-        {
-            // TO EDIT THE ENTRY IN THE NEW RECORD
+    } 
 
-            // In the row of the  new record, select edit button
-            IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
-            editButton.Click();
-
-
-            // clear the old value
-            driver.FindElement(By.Id("Description")).Clear();
-
-            // Select the item user wants to edit in the record...here user want to edit  description entry & edit the value
-            IWebElement newDescription = driver.FindElement(By.Id("Description"));
-            newDescription.SendKeys("Mar-Apr2024");
-
-
-            //navigate to save button and click it
-
-            IWebElement saveEdit = driver.FindElement(By.Id("SaveButton"));
-            saveEdit.Click();
-
-            Thread.Sleep(5000);
-
-            //navigate to the last page and check whether the latest entry's price value has been editted or not
-            IWebElement goToEditValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goToEditValue.Click();
-
-            IWebElement edittedValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            string valueText = edittedValue.Text;
-            string wantedText = "Wanted Item Text";
-
-
-            if (valueText == wantedText)
-            {
-                Console.WriteLine("Record has been editted succeddfully");
-            }
-            else
-            {
-                Console.WriteLine("Record has not been editted successfully");
-            }
-
-        }
-        public void DeleteNewlyCreatedTMRecord(IWebDriver driver)
-        {
-            // TO DELETE THE NEW RECORD FROM THE TABLE
-
-            // In the new row navigate to the delete button and click on it
-            IWebElement deleteItem = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
-            deleteItem.Click();
-
-            //Select "Ok" in the hover pop up
-            IAlert alert = driver.SwitchTo().Alert();
-            alert.Accept();
-
-            Thread.Sleep(5000);
-
-            // Check whether the deleted entry no more exists in the table
-
-            IWebElement deletedValue = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            string itemText = deletedValue.Text;
-            string expectedText = "Expected Item Text";
-
-            if (itemText == expectedText)
-            {
-                Console.WriteLine("Item has not been deleted, it is still there");
-            }
-            else
-            {
-                Console.WriteLine("Record has been deleted successfully");
-            }
-
-
-        }
-       
-
-
-
-    }
-
-
-
-
-
-}
 

@@ -25,13 +25,14 @@ namespace TurnUpPortal_Automation.Pages
         public void LoginActions(IWebDriver driver, string username, string password)
         {
             driver.Manage().Window.Maximize();
-            
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+            Thread.Sleep(7000);
 
             //Launch turnup Portal and navigates to login page
             string baseURL = "http://horse.industryconnect.io/Account/Login";
             driver.Navigate().GoToUrl(baseURL);
-          
+           // driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login");
+
 
             //Identify username textbox and enter valid username 
             // IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));

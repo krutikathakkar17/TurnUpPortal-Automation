@@ -73,15 +73,7 @@ namespace TurnUpPortal_Automation.Pages
             {
                 IWebElement helloHariLink = driver.FindElement(helloHariLinkLocator);
 
-                /*if (helloHariLink.Text == "Hello hari!")
-                {
-                Console.WriteLine("User has logged in successfully");
-                 }
-                 else
-                {
-                 Console.WriteLine("User hasn't been logged in.");
-                }*/
-
+        
                 Assert.That(helloHariLink.Text == "Hello hari!", "User hasn't been logged in.");
             }
             catch (Exception ex)

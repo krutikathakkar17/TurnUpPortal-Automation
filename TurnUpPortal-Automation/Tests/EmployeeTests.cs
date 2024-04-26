@@ -49,10 +49,10 @@ namespace TurnUpPortal_Automation.Tests
 
             }
 
-            [TearDown]
+            /*[TearDown]
             public void CloseTestRun()
             {
-                driver.Quit();
+                //driver.Quit();*/
 
             }
 
@@ -66,4 +66,4 @@ namespace TurnUpPortal_Automation.Tests
 
             
         }
-    } 
+     

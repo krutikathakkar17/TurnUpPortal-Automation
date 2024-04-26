@@ -17,6 +17,7 @@ namespace TurnUpPortal_Automation.Tests
     public class TimeMaterialTests : CommonDriver
     {
         TimeMaterialPage tmPageObj = new TimeMaterialPage();
+        HomePage homePageObj = new HomePage();
         [SetUp]
         public void SetUpTimeMaterial()
         {
@@ -29,7 +30,7 @@ namespace TurnUpPortal_Automation.Tests
 
             // Home Page Object initialization and definition
 
-            HomePage homePageObj = new HomePage();
+           // HomePage homePageObj = new HomePage();
             homePageObj.VerifyLoggedInUser(driver);
             homePageObj.NavigateToTimeMaterialPage(driver);
 
@@ -47,7 +48,7 @@ namespace TurnUpPortal_Automation.Tests
         [Test, Order(2), Description("This test edits a new Time/Material record with valid details")]
         public void TestEditTimeMaterialRecord()
         {
-            TimeMaterialPage tmPageObj = new TimeMaterialPage();
+           // TimeMaterialPage tmPageObj = new TimeMaterialPage();
             tmPageObj.EditNewlyCreatedTMRecord(driver);
 
         }
@@ -55,7 +56,7 @@ namespace TurnUpPortal_Automation.Tests
         [Test, Order(3), Description("This test deletes the last Time/Material record")]
         public void TestDeleteTimeMaterialRecord()
         {
-            TimeMaterialPage tmPageObj = new TimeMaterialPage();
+            //TimeMaterialPage tmPageObj = new TimeMaterialPage();
             tmPageObj.DeleteNewlyCreatedEmployeeRecord(driver);
 
         }
